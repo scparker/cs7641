@@ -18,7 +18,15 @@ def loadPhishingDataSet():
 
 def loadOccupancyDataSet():
     df_all = pd.read_csv("datasets/occupancy/datatraining.txt")
+    df_all["hour"] = pd.to_datetime(df_all["date"].values).hour
+    df_all["dayofweek"] = pd.to_datetime(df_all["date"].values).dayofweek
     df_all = df_all.drop("date", 1)
+
+    col = list(df_all.columns)
+    col[5] = "dayofweek"
+    col[-1] = "Occupancy"
+    df_all = df_all[col]
+    
     #  Split into training and testing sets
     split_ratio = .65
     split_point = int(len(df_all) * split_ratio)
@@ -33,6 +41,18 @@ def loadBankDataSet():
     mapped_values = ["job", "marital", "education", "default", "housing", "loan", "contact", "month", "poutcome", "y"]
     for value in mapped_values:
         df_all[value] = df_all[value].map({j:i for i,j in enumerate(df_all[value].unique())})
+       
+    #  Split into training and testing sets
+    split_ratio = .65
+    split_point = int(len(df_all) * split_ratio)
+
+    df_training = df_all[0:split_point]
+    df_testing  = df_all[split_point:]
+
+    return df_training, df_testing
+
+def loadSpamDataSet():
+    df_all = pd.read_csv("datasets/spam/spambase.data.txt")
        
     #  Split into training and testing sets
     split_ratio = .65
