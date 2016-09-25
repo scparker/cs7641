@@ -52,7 +52,7 @@ def loadBankDataSet():
     return df_training, df_testing
 
 def loadSpamDataSet():
-    df_all = pd.read_csv("datasets/spam/spambase.data.txt")
+    df_all = pd.read_csv("datasets/spam/spambase.data.txt", header=0)
        
     #  Split into training and testing sets
     split_ratio = .65
